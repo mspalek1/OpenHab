@@ -52,7 +52,5 @@ then
         else
         {
                 logInfo("Info", "RollerShutters are already open");
-                BedRoom.sendCommand(UP);
-                BedRoom2.sendCommand(UP);
         }
 end
