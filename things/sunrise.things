@@ -1,0 +1,43 @@
+// astro:sun:home [ geolocation="51.120257180640074,17.06075719331234,100", interval=60 ]
+// astro:sun:home_30 [ geolocation="51.120257180640074,17.06075719331234,100", interval=300 ] {
+//         Channels:
+//             Type rangeEvent : set#start [
+//                 offset=-30
+//             ]
+//             Type rangeEvent : rise#start [
+//                 offset=-30
+//             ]
+//     }
+astro:sun:home_rollerShutter_1 [ geolocation="51.120257180640074,17.06075719331234,100", interval=300 ] {
+        Channels:
+            Type rangeEvent : rise#start [
+                offset=-25
+            ]
+            Type rangeEvent : rise#event [
+                offset=-25,
+                earliest="06:20",
+			    latest="07:30"
+            ]
+            Type rangeEvent : set#start [
+                offset=25
+            ]
+            Type rangeEvent : set#event [
+                offset=25
+            ]
+    }
+
+astro:sun:minus604  [ geolocation="51.120257180640074,17.06075719331234,100", interval=300 ] {
+        Channels:
+            Type rangeEvent : set#start [
+                offset=-30
+            ]
+            Type rangeEvent : set#event [
+                offset=-30
+            ]
+             Type rangeEvent : rise#start [
+                offset=-30
+            ]
+            Type rangeEvent : rise#event [
+                offset=-30
+            ]
+    }

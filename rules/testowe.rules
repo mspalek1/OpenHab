@@ -1,0 +1,67 @@
+
+rule "RollerShutter astro:sun:home_60_set_start"
+when
+        Channel 'astro:sun:home_60:set#event' triggered START
+then
+      //  val sunActions = getActions("astro","astro:sun:home_rollerShutter_1");
+       //  logInfo("Info", sunActions)
+
+      
+
+       // var sunEventTime = sunActions.getEventTime(sunEvent, today, moment);
+
+        //logInfo("Info", "astro:sun:home_rollerShutter_1")
+        logInfo("test",Ephemeris.isWeekend(now.plusDays(0)).toString)
+
+
+        logInfo("test", Ephemeris.getBankHolidayName(now.plusDays(0),'/etc/openhab/services/holidays.xml'));
+        logInfo("test", Ephemeris.isBankHoliday(now.plusDays(0),'/etc/openhab/services/holidays.xml').toString());
+end
+
+rule "RollerShutter astro:sun:home_60_rise_start"
+when
+        Channel 'astro:sun:home_60:rise#event' triggered START
+then
+        logInfo("Info", "astro:sun:home_60_rise_start")
+end
+
+rule "RollerShutter TEST"
+when
+        Channel 'astro:sun:minus601:rise#start' triggered
+then
+        logInfo("Info", "Sun set event test")
+
+        val sunActions = getActions("astro","astro:sun:minus60")
+        
+        if(null === sunActions) 
+        {
+            logInfo("actions", "sunActions not found, check thing ID")
+            return
+        } 
+        else 
+        { 
+            val today = ZonedDateTime.now;
+            var thing = "astro:sun:minus60";
+
+            val sunEvent = "SUN_SET";
+            var moment = "START";
+
+            var sunEventTime = sunActions.getEventTime(sunEvent, today, moment);
+            logInfo("AstroActions","Channel: {} for moment: {} for event: {} will happen at: {}", thing, moment, sunEvent, sunEventTime.toString);
+
+            moment = "STOP";
+            sunEventTime = sunActions.getEventTime(sunEvent, today, moment);
+            logInfo("AstroActions","Channel: {} for moment: {} for event: {} will happen at: {}", thing, moment, sunEvent, sunEventTime.toString);
+
+            sunEvent = "SUN_RISE";
+            moment = "START";
+            sunEventTime = sunActions.getEventTime(sunEvent, today, moment);
+            logInfo("AstroActions","Channel: {} for moment: {} for event: {} will happen at: {}", thing, moment, sunEvent, sunEventTime.toString);
+
+            moment = "STOP";
+            sunEventTime = sunActions.getEventTime(sunEvent, today, moment);
+            logInfo("AstroActions","Channel: {} for moment: {} for event: {} will happen at: {}", thing, moment, sunEvent, sunEventTime.toString);
+
+           // BedRoom.sendCommand(DOWN);
+        }
+end

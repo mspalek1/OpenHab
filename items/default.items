@@ -1,0 +1,4 @@
+Rollershutter  BedRoom  "Sypialnia" (Entrance)  { serial="/dev/ttyS0,UP(##030400\n),DOWN(##030401\n),STOP(##030402\n)" }
+Rollershutter  LivingRoom  "Salon" (Entrance)  { serial="/dev/ttyS0,UP(##030100\n),DOWN(##030101\n),STOP(##030102\n)" }
+Rollershutter  Kitchen  "Kuchnia" (Entrance)  { serial="/dev/ttyS0,UP(##030200\n),DOWN(##030201\n),STOP(##030202\n)" }
+Rollershutter  BedRoom2  "Pokój Izy" (Entrance)  { serial="/dev/ttyS0,UP(##030300\n),DOWN(##030301\n),STOP(##030302\n)" }

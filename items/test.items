@@ -1,0 +1,12 @@
+/*DateTime Sunrise_Time "Sunrise_Time [%1$tH:%1$tM]" { channel="astro:sun:home_xmas:rise#start" }
+DateTime Sunset_Time "Sunset_Time [%1$tH:%1$tM]" { channel="astro:sun:home_xmas:set#start" }
+
+DateTime    Sunset_Time    "Sunset [%1$tH:%1$tM]"     <sun>    (gAstro) {channel="astro:sun:home:set#start"}
+DateTime    Sunset_Time1   "Sunset [%1$tH:%1$tM]"    <sun>    (gAstro) {channel="astro:sun:home:set#start"}
+DateTime    Sunset_Time2   "Sunset [%1$tH:%1$tM]"    <sun>    (gAstro) {channel="astro:sun:home_30:set#start"}
+
+DateTime    Sunrise_Time    "Sunrise [%1$tH:%1$tM]"    <sunset>    (gAstro) {channel="astro:sun:home_30:rise#start"}
+DateTime    Sunrise_Time1   "Sunrise [%1$tH:%1$tM]"    <sunset>    (gAstro) {channel="astro:sun:home:rise#start"}
+
+DateTime    Sunset_Time    "Sunset [%1$tH:%1$tM]"     <sun>    (gAstro) {channel="astro:sun:home_rollerShutter_1"}
+DateTime    Sunrise_Time    "Sunrise [%1$tH:%1$tM]"   <sunset> (gAstro) {channel="astro:sun:home_rollerShutter_1"}*/

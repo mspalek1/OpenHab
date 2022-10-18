@@ -1,0 +1,58 @@
+
+rule "RollerShutter astro:sun:home_rollerShutter_DOWN"
+when
+        Channel 'astro:sun:home_rollerShutter_1:set#event' triggered START
+then
+        logInfo("Info", "RollerShutter DOWN");
+        BedRoom.sendCommand(DOWN);
+        BedRoom2.sendCommand(DOWN);
+end
+
+rule "RollerShutter astro:sun:home_rollerShutter_UP"
+when
+        Channel 'astro:sun:home_rollerShutter_1:rise#event' triggered START
+        or
+        Time cron "0 0 8 ? * * *"
+        //https://www.freeformatter.com/cron-expression-generator-quartz.html
+        // Time cron "ss mm hh DD MM WW YYYY"
+        // where YYYY is OPTIONAL. All other fields are mandatory.
+        // ss -> Seconds
+        // mm -> Minutes
+        // hh -> Hours
+        // DD -> Day of Month
+        // MM -> Month (i.e. 1 to 12 or JAN to DEC)
+        // WW -> Day of Week (i.e. 1 to 7 or SUN to SAT)
+then
+        val isWeekend = Ephemeris.isWeekend();
+        val ifLatestOpen = false;
+        val isBankHoliday = Ephemeris.isBankHoliday();
+
+       // logInfo("Info", isWeekend.toString())
+
+        var Number hour = now.getHour
+        if(hour >= 8)
+        {
+              //  logInfo("Info", hour.toString());
+                ifLatestOpen = true;
+        }
+
+        if(!isWeekend && !ifLatestOpen && !isBankHoliday)
+        {
+                logInfo("Info", "RollerShutter UP - workday");
+                BedRoom.sendCommand(UP);
+                BedRoom2.sendCommand(UP);
+        }
+        else if(ifLatestOpen && (isBankHoliday || isWeekend))
+        {
+                logInfo("Info", "RollerShutter UP - weekend or holiday or custom holiday");
+                //Kitchen.sendCommand(UP);
+                BedRoom.sendCommand(UP);
+                BedRoom2.sendCommand(UP);
+        }
+        else
+        {
+                logInfo("Info", "RollerShutters are already open");
+                BedRoom.sendCommand(UP);
+                BedRoom2.sendCommand(UP);
+        }
+end
