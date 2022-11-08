@@ -5,7 +5,13 @@ when
 then
         logInfo("Info", "RollerShutter DOWN");
         BedRoom.sendCommand(DOWN);
+        Thread::sleep(500)
         BedRoom2.sendCommand(DOWN);
+        Thread::sleep(500)
+        BedRoom2.sendCommand(DOWN);
+        Thread::sleep(500)
+        BedRoom.sendCommand(DOWN);
+
 end
 
 rule "RollerShutter astro:sun:home_rollerShutter_UP"
@@ -26,8 +32,12 @@ then
         val isWeekend = Ephemeris.isWeekend();
         val ifLatestOpen = false;
         val isBankHoliday = Ephemeris.isBankHoliday();
+        val isMyHoliday = Ephemeris.isBankHoliday(now.plusDays(0),'/etc/openhab/services/holidays.xml');
 
-       // logInfo("Info", isWeekend.toString())
+       // logInfo("Info", isWeekend.totring())
+       //logInfo("Info", "isBankHoliday: " +isBankHoliday.toString() + ", isMyHoliday: " + isMyHoliday);
+
+       Thread::sleep(500)
 
         var Number hour = now.getHour
         if(hour >= 8)
@@ -40,17 +50,31 @@ then
         {
                 logInfo("Info", "RollerShutter UP - workday");
                 BedRoom.sendCommand(UP);
+                Thread::sleep(500)
                 BedRoom2.sendCommand(UP);
+                Thread::sleep(500)
+                BedRoom2.sendCommand(UP);
+                Thread::sleep(500)
+                BedRoom.sendCommand(UP);
         }
-        else if(ifLatestOpen && (isBankHoliday || isWeekend))
+        else if(ifLatestOpen && (isBankHoliday || isWeekend || isMyHoliday))
         {
                 logInfo("Info", "RollerShutter UP - weekend or holiday or custom holiday");
+                if(isBankHoliday || isMyHoliday)
+                {
+                        logInfo("Info", "isBankHoliday: " +isBankHoliday.toString() + ", isMyHoliday: " + isMyHoliday);
+                }
                 //Kitchen.sendCommand(UP);
                 BedRoom.sendCommand(UP);
+                Thread::sleep(500)
                 BedRoom2.sendCommand(UP);
+                Thread::sleep(500)
+                BedRoom2.sendCommand(UP);
+                Thread::sleep(500)
+                BedRoom.sendCommand(UP);
         }
-        else
-        {
-                logInfo("Info", "RollerShutters are already open");
-        }
+        // else
+        // {
+        //         logInfo("Info", "RollerShutters are already open");
+        // }
 end

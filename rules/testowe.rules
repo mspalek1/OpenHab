@@ -14,8 +14,8 @@ then
         logInfo("test",Ephemeris.isWeekend(now.plusDays(0)).toString)
 
 
-        logInfo("test", Ephemeris.getBankHolidayName(now.plusDays(0),'/etc/openhab/services/holidays.xml'));
-        logInfo("test", Ephemeris.isBankHoliday(now.plusDays(0),'/etc/openhab/services/holidays.xml').toString());
+        logInfo("test", Ephemeris.getBankHolidayName(now.plusDays(3),'/etc/openhab/services/holidays.xml'));
+        logInfo("test", Ephemeris.isBankHoliday(now.plusDays(3),'/etc/openhab/services/holidays.xml').toString());
 end
 
 rule "RollerShutter astro:sun:home_60_rise_start"
@@ -27,11 +27,11 @@ end
 
 rule "RollerShutter TEST"
 when
-        Channel 'astro:sun:minus601:rise#start' triggered
+        Channel 'astro:sun:minus604:rise#start' triggered
 then
         logInfo("Info", "Sun set event test")
 
-        val sunActions = getActions("astro","astro:sun:minus60")
+        val sunActions = getActions("astro","astro:sun:minus604")
         
         if(null === sunActions) 
         {
@@ -41,7 +41,7 @@ then
         else 
         { 
             val today = ZonedDateTime.now;
-            var thing = "astro:sun:minus60";
+            var thing = "astro:sun:minus604";
 
             val sunEvent = "SUN_SET";
             var moment = "START";
