@@ -11,18 +11,18 @@
 astro:sun:home_rollerShutter_1 [ geolocation="51.120257180640074,17.06075719331234,100", interval=300 ] {
         Channels:
             Type rangeEvent : rise#start [
-                offset=-15
+                offset=-10
             ]
             Type rangeEvent : rise#event [
-                offset=-15,
+                offset=-10,
                 earliest="06:20",
-			    latest="07:30"
+			    latest="07:59"
             ]
             Type rangeEvent : set#start [
-                offset=15
+                offset=10
             ]
             Type rangeEvent : set#event [
-                offset=15
+                offset=10
             ]
     }
 
