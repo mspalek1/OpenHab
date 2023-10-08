@@ -2,8 +2,8 @@ sitemap default label="Home" {
     Frame label="Rolety" {
         Switch item=LivingRoom
         Switch item=Kitchen
-        Switch item=BedRoom2
-        Switch item=BedRoom
+        Switch item=FirstBedRoom
+        Switch item=SecondBedRoom
     }
      Webview url="/static/HideHeader.html" icon="none"
 }

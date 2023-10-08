@@ -1,3 +1,4 @@
+
 Your rules go here.
 All rule files have to have the ".rules" file extension and must follow a special syntax.
 

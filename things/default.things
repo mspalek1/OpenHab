@@ -1,0 +1,9 @@
+Bridge serial:serialBridge:sensors [serialPort="/dev/ttyAMA0", baudRate=9600] {
+    Thing serialDevice rollershutter [patternMatch=".*"] {
+        Channels:
+            Type rollershutter : LivingRoom [stateTransformation="REGEX:Position:([0-9.]*)", upValue="##030100\n", downValue="##030101\n", stopValue="##030102\n"]
+            Type rollershutter : Kitchen [stateTransformation="REGEX:Position:([0-9.]*)", upValue="##030200\n", downValue="##030201\n", stopValue="##030202\n"]
+            Type rollershutter : FirstBedRoom [stateTransformation="REGEX:Position:([0-9.]*)", upValue="##030300\n", downValue="##030301\n", stopValue="##030302\n"]
+            Type rollershutter : SecondBedRoom [stateTransformation="REGEX:Position:([0-9.]*)", upValue="##030400\n", downValue="##030401\n", stopValue="##030402\n"]
+    }
+}

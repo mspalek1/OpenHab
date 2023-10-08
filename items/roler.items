@@ -1,0 +1,1 @@
+Rollershutter serialRollo "Entrance Rollo" (Entrance) {channel="serial:serialDevice:sensors:rollershutter:serialRollo"}
