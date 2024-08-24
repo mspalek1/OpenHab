@@ -72,7 +72,7 @@ then
         month = 8;
         day = 31;
         val endDate = now.withYear(year).withMonth(month).withDayOfMonth(day)
-        // logInfo("Info", "Year " + " " + startDate.toString() + " " + endDate.toString());
+        //logInfo("Info", "Year " + " " + startDate.toString() + " " + endDate.toString());
         // Tworzenie zmiennej boolean i sprawdzanie, czy aktualna data mieści się w przedziale
         val boolean isHoliday = now.isAfter(startDate) && now.isBefore(endDate)
         //logInfo("Info", "isHoliday " + isHoliday.toString());
@@ -86,7 +86,7 @@ then
         var Number hour = now.getHour
         if(hour >= 8)
         {    
-              //  logInfo("Info", hour.toString());
+                //logInfo("Info", hour.toString());
                 ifLatestOpen = true;
         }
 
@@ -103,21 +103,21 @@ then
         }
         else if(ifLatestOpen && (isBankHoliday || isWeekend || isMyHoliday || isHoliday))
         {
-                logInfo("Info", "RollerShutter UP - weekend or holiday or custom holiday");
-                if(isBankHoliday || isMyHoliday)
-                {
-                        logInfo("Info", "isBankHoliday: " +isBankHoliday.toString() + ", isMyHoliday: " + isMyHoliday);
-                }
-                if(isHoliday)
-                {
-                        logInfo("Info", "isHoliday: " +isHoliday.toString());
-                }
+               logInfo("Info", "RollerShutter UP - isWeekend: " + isWeekend.toString() + ", isBankHoliday: " + isBankHoliday.toString() + ", isMyHoliday: " + isMyHoliday.toString() + ", isHoliday: " + isHoliday.toString());
+                // if(isBankHoliday || isMyHoliday)
+                // {
+                //         logInfo("Info", "isBankHoliday: " +isBankHoliday.toString() + ", isMyHoliday: " + isMyHoliday);
+                // }
+                // if(isHoliday)
+                // {
+                //         logInfo("Info", "isHoliday: " +isHoliday.toString());
+                // }
                 FirstBedRoom.sendCommand(UP);
                 Thread::sleep(500)
                 SecondBedRoom.sendCommand(UP);
         }
-        // else
-        // {
-        //         logInfo("Info", "RollerShutters are already open");
-        // }
+        else
+        {
+                logInfo("Info", "RollerShutters are already open");
+        }
 end
