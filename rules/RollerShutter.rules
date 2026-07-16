@@ -50,70 +50,62 @@ when
         // WW -> Day of Week (i.e. 1 to 7 or SUN to SAT)
 then
         val isWeekend = Ephemeris.isWeekend();
-        val ifLatestOpen = false;
         val isBankHoliday = Ephemeris.isBankHoliday();
-        val isMyHoliday = Ephemeris.isBankHoliday(now.plusDays(0),'/etc/openhab/services/holidays.xml');
         
-        // val now = new DateTime();
-        // // Ustalanie daty początkowej (27.06 bieżącego roku)
-        // val start = new DateTime(now.getYear(), 6, 27, 0, 0)
-        // // Ustalanie daty końcowej (31.08 bieżącego roku)
-        // val end = new DateTime(now.getYear(), 8, 31, 23, 59, 59)
-        //  // Tworzenie zmiennej boolean i sprawdzanie, czy aktualna data mieści się w przedziale
-        // val boolean isHoliday = now.isAfter(start) && now.isBefore(end)
-
-
-        // Ustalanie daty początkowej (27.06 bieżącego roku)
-        val year = now.getYear();
-        val month = 6;
-        val day = 27;
-        val startDate = now.withYear(year).withMonth(month).withDayOfMonth(day)
+        // Urlop pobierany z kalendarza Google
+        val isMyHoliday =
+                MyHolidayTitle.state != NULL &&
+                MyHolidayTitle.state != UNDEF &&
+                MyHolidayTitle.state.toString == "Urlop"
         
-        month = 8;
-        day = 31;
-        val endDate = now.withYear(year).withMonth(month).withDayOfMonth(day)
-        //logInfo("Info", "Year " + " " + startDate.toString() + " " + endDate.toString());
-        // Tworzenie zmiennej boolean i sprawdzanie, czy aktualna data mieści się w przedziale
-        val boolean isHoliday = now.isAfter(startDate) && now.isBefore(endDate)
-        //logInfo("Info", "isHoliday " + isHoliday.toString());
+        // Godzina późniejszego otwarcia rolet.
+        // Przy zmianie godziny zmień również cron powyżej.
+        val lateOpeningHour = 8
+        val isLateOpening = now.getHour >= lateOpeningHour
 
-        //logInfo("org.openhab.rollershutter", "test czy działa")
-        //logInfo("Info", "isWeekend: " +isWeekend.toString())
-       //logInfo("Info", "isBankHoliday: " +isBankHoliday.toString() + ", isMyHoliday: " + isMyHoliday);
+        // Wakacje szkolne: od 27 czerwca do 31 sierpnia włącznie
+        val today = now.toLocalDate()
+        val year = today.getYear()
 
-       Thread::sleep(500)
+        val schoolHolidayStart = java.time.LocalDate.of(year, 6, 27)
+        val schoolHolidayEnd = java.time.LocalDate.of(year, 8, 31)
+        val isSchoolHoliday = !today.isBefore(schoolHolidayStart) && !today.isAfter(schoolHolidayEnd)
 
-        var Number hour = now.getHour
-        if(hour >= 8)
-        {    
-                //logInfo("Info", hour.toString());
-                ifLatestOpen = true;
-        }
+        Thread::sleep(500)
 
-        if(!isWeekend && !ifLatestOpen && !isBankHoliday)
+        /*
+        * Zwykły dzień roboczy, uruchomienie o wschodzie słońca.
+        * Poza wakacjami szkolnymi otwierają się obie rolety.
+        * Podczas wakacji szkolnych otwiera się tylko SecondBedRoom.
+        * Podczas własnego urlopu rolety czekają na późniejsze otwarcie.
+        */
+
+        if ( !isWeekend && !isLateOpening && !isBankHoliday && !isMyHoliday)
         {
-                logInfo("Info", "RollerShutter UP - workday");
-                if(!isHoliday)
+                logInfo( "Info", "RollerShutter UP - workday, isSchoolHoliday: " + isSchoolHoliday.toString());
+
+                if (!isSchoolHoliday) 
                 {
                         FirstBedRoom.sendCommand(UP);
-                        Thread::sleep(500)
+                        Thread::sleep(500);
+
                 }
-               
                 SecondBedRoom.sendCommand(UP);
-        }
-        else if(ifLatestOpen && (isBankHoliday || isWeekend || isMyHoliday || isHoliday))
+        } 
+       
+        /*
+        * Późniejsze otwarcie podczas weekendu, święta,
+        * własnego urlopu albo wakacji szkolnych.
+        */
+         else if ( isLateOpening && ( isBankHoliday || isWeekend || isMyHoliday || isSchoolHoliday ))
         {
-               logInfo("Info", "RollerShutter UP - isWeekend: " + isWeekend.toString() + ", isBankHoliday: " + isBankHoliday.toString() + ", isMyHoliday: " + isMyHoliday.toString() + ", isHoliday: " + isHoliday.toString());
-                // if(isBankHoliday || isMyHoliday)
-                // {
-                //         logInfo("Info", "isBankHoliday: " +isBankHoliday.toString() + ", isMyHoliday: " + isMyHoliday);
-                // }
-                // if(isHoliday)
-                // {
-                //         logInfo("Info", "isHoliday: " +isHoliday.toString());
-                // }
+                logInfo( "Info", "RollerShutter UP - isWeekend: " + isWeekend.toString() +
+                        ", isBankHoliday: " + isBankHoliday.toString() +
+                        ", isMyHoliday: " + isMyHoliday.toString() +
+                        ", isSchoolHoliday: " + isSchoolHoliday.toString() );
+
                 FirstBedRoom.sendCommand(UP);
-                Thread::sleep(500)
+                Thread::sleep(500);
                 SecondBedRoom.sendCommand(UP);
         }
         else
